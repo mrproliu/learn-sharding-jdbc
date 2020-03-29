@@ -1,0 +1,34 @@
+# \u4E24\u53F0\u4E3B\u673A\u7684\u6570\u636E\u6E90\u4FE1\u606F,\u4E24\u4E2A\u6570\u636E\u8282\u70B9
+dataSources:
+  ds0: !!com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://rm-2ze46drn65535v29zoo.mysql.rds.aliyuncs.com:3306/shardingtest?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: shardingtest
+    password: a1s2d3f4
+  ds1: !!com.zaxxer.hikari.HikariDataSource
+    driverClassName: com.mysql.cj.jdbc.Driver
+    jdbcUrl: jdbc:mysql://rm-2ze720mc6so2nyt56po.mysql.rds.aliyuncs.com:3306/shardingtest?serverTimezone=UTC&useSSL=false&useUnicode=true&characterEncoding=UTF-8
+    username: shardingtest
+    password: a1s2d3f4
+
+# \u8DEF\u7531\u914D\u7F6E
+shardingRule:
+  # \u8868\u914D\u7F6E
+  tables:
+    t_order:
+      # \u5728\u8FDB\u884C\u5904\u7406\u65F6\u7684\u6570\u636E\u8282\u70B9\u9009\u62E9
+      actualDataNodes: ds${0..1}.t_order
+      # \u6570\u636E\u8282\u70B9\u7684\u9009\u62E9
+      databaseStrategy:
+        inline:
+          # \u6309\u7167\u7528\u6237id\u8FDB\u884C\u9009\u62E9\u6570\u636E\u5E93
+          shardingColumn: user_id
+          algorithmExpression: ds${user_id % 2}
+      # order_id\u4E3B\u952E\u901A\u8FC7SNOWFLAKE\u7B97\u6CD5\u8FDB\u884C\u751F\u6210
+      keyGenerator:
+        type: SNOWFLAKE
+        column: order_id
+
+  # \u9ED8\u8BA4\u6570\u636E\u6E90
+  defaultDataSourceName: ds0
+
