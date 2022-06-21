@@ -11,7 +11,7 @@
     <properties>
         <sharding.jdbc.version>4.0.1</sharding.jdbc.version>
         <hikaricp.datasource.version>3.4.2</hikaricp.datasource.version>
-        <mysql.connector.version>8.0.19</mysql.connector.version>
+        <mysql.connector.version>8.0.28</mysql.connector.version>
     </properties>
 
     <dependencyManagement>
